@@ -1,0 +1,659 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Vic 9527">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="变量可变性 Rust 的变量在默认情况下是不可变的 通过 mut 关键字让变量变为可变的  声明变量12345678910111213fn main() &#123;	&#x2F;&#x2F; 声明不可变变量	let x &#x3D; 5;	println!(&quot;The value of x is: &#123;&#125;&quot;, x);	x &#x3D; 6; &#x2F;&#x2F; 此处会报错，error[E0384]: cannot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust 基础入门 - Day 2 变量和可变类型">
+<meta property="og:url" content="http://example.com/2024/10/31/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%202%20%E5%8F%98%E9%87%8F%E5%92%8C%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="V9527&#39;s Blog">
+<meta property="og:description" content="变量可变性 Rust 的变量在默认情况下是不可变的 通过 mut 关键字让变量变为可变的  声明变量12345678910111213fn main() &#123;	&#x2F;&#x2F; 声明不可变变量	let x &#x3D; 5;	println!(&quot;The value of x is: &#123;&#125;&quot;, x);	x &#x3D; 6; &#x2F;&#x2F; 此处会报错，error[E0384]: cannot">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-10-31T06:06:04.521Z">
+<meta property="article:modified_time" content="2024-10-31T13:01:28.637Z">
+<meta property="article:author" content="Vic 9527">
+<meta property="article:tag" content="Rust">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Rust 基础入门 - Day 2 变量和可变类型 - V9527&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>V9527</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Rust 基础入门 - Day 2 变量和可变类型"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-31 14:06" pubdate>
+          October 31, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Rust 基础入门 - Day 2 变量和可变类型</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="变量可变性"><a href="#变量可变性" class="headerlink" title="变量可变性"></a>变量可变性</h2><ul>
+<li>Rust 的变量在默认情况下是<strong>不可变的</strong></li>
+<li>通过 <code>mut</code> 关键字让变量变为<strong>可变的</strong></li>
+</ul>
+<h3 id="声明变量"><a href="#声明变量" class="headerlink" title="声明变量"></a>声明变量</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>	<span class="hljs-comment">// 声明不可变变量</span><br>	<span class="hljs-keyword">let</span> <span class="hljs-variable">x</span> = <span class="hljs-number">5</span>;<br>	<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);<br>	x = <span class="hljs-number">6</span>; <span class="hljs-comment">// 此处会报错，error[E0384]: cannot assign twice to immutable variable `x`</span><br>	<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);<br>	<br>	<span class="hljs-comment">// 声明可变变量</span><br>	<span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">y</span> = <span class="hljs-number">2</span>;<br>	<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The value of y is: &#123;&#125;&quot;</span>, y);<br>	y = <span class="hljs-number">4</span>;<br>	<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The value of y is: &#123;&#125;&quot;</span>, y);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="常量-constant"><a href="#常量-constant" class="headerlink" title="常量(constant)"></a>常量(constant)</h2><ul>
+<li>常量不允许使用<code>mut</code></li>
+<li><strong>常量不仅仅默认不可变，而且自始至终不可变</strong></li>
+<li>常量使用 <code>const</code> 关键字而不是 <code>let</code> 关键字来声明</li>
+<li>必须显示指定数据类型</li>
+<li>Rust 常量的命名约定是全部字母都使用大写，并使用下划线分隔单词</li>
+<li>必须使用常量表达式进行赋值，即必须是编译期能计算出的值</li>
+<li>常量不支持重定义（遮蔽），这和变量是不同的</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// 常量声明</span><br><span class="hljs-keyword">const</span> MAX_COUNT: <span class="hljs-type">i32</span> = <span class="hljs-number">10</span>;<br><span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The value is: &#123;&#125;&quot;</span>, MAX_COUNT);<br></code></pre></td></tr></table></figure>
+
+<h3 id="不可变变量和常量的区别？"><a href="#不可变变量和常量的区别？" class="headerlink" title="不可变变量和常量的区别？"></a>不可变变量和常量的区别？</h3><ul>
+<li>常量使用 <code>const</code> 进行声明，不可变变量使用 <code>let</code> 进行声明 。</li>
+<li>常量在编译期就确定了值，不能在运行时改变。不可变变量直到运行期来能确定下来。</li>
+<li>常量不可以修改，不可变变量可以通过 <code>shadowing</code> 来修改。</li>
+<li>常量必须声明类型，不可变变量不需要声明类型</li>
+<li>常量必须使用大写字母，不可变变量不需要</li>
+</ul>
+<h2 id="静态变量-Static"><a href="#静态变量-Static" class="headerlink" title="静态变量 (Static)"></a>静态变量 (Static)</h2><ul>
+<li>静态变量使用 <code>static</code> 关键字进行声明并在编译时分配内存，并且在程序运行期间一直存在</li>
+<li>静态变量可以在整个程序中共享，并且可以在多个线程之间共享。</li>
+<li>静态变量的值在程序运行期间不会改变，因此它们通常用于存储程序的全局状态</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// 声明一个静态变量</span><br><span class="hljs-keyword">static</span> NUM: <span class="hljs-type">i32</span> = <span class="hljs-number">5</span>;<br><br><span class="hljs-comment">// 声明一个可变的静态变量</span><br><span class="hljs-keyword">static</span> <span class="hljs-keyword">mut</span> COUNTER2: <span class="hljs-type">i32</span> = <span class="hljs-number">5</span>;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>	<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The value of NUM is: &#123;&#125;&quot;</span>, NUM); <span class="hljs-comment">// The value of NUM is: 5</span><br>	<br>	<span class="hljs-title function_ invoke__">change_counter_static</span>();<br>	<span class="hljs-title function_ invoke__">change_counter_static_unsafe</span>();<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">change_counter_static</span>() &#123;<br>	COUNTER += <span class="hljs-number">1</span>; <span class="hljs-comment">// error[E0133]: use of mutable static is unsafe and requires unsafe function or block</span><br>	<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The value of COUNTER is: &#123;&#125;&quot;</span>, COUNTER);<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">change_counter_static_unsafe</span>() &#123;<br>	<span class="hljs-keyword">unsafe</span> &#123; <span class="hljs-comment">// 需要用 unsafe 包裹才生效</span><br>		COUNTER += <span class="hljs-number">1</span>;<br>		<span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The value of COUNTER is: &#123;&#125;&quot;</span>, COUNTER);<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="与常量的相似点"><a href="#与常量的相似点" class="headerlink" title="与常量的相似点"></a>与常量的相似点</h3><ul>
+<li>名称都要求使用大写，否则会报 Warning</li>
+<li>都必须明确指定类型</li>
+<li>都要求必须使用常量表达式进行赋值，即必须是编译期能计算出的值</li>
+<li>都不支持重定义(遮蔽)，这和变量是不同的</li>
+</ul>
+<h3 id="与常量的区别"><a href="#与常量的区别" class="headerlink" title="与常量的区别"></a>与常量的区别</h3><ul>
+<li>定义关键字: 静态变量使用 <code>static</code>，常量使用 <code>const</code></li>
+<li>常量在编译时被内联，但静态变量不会。在整个程序中静态变量只有一个实例，也就是说所有引用都指向同一个地址。</li>
+<li>常量不可变，而静态变量和普通变量一样，默认不可变但可以通过 <code>mut</code> 关键字定义为可变</li>
+</ul>
+<h2 id="变量遮蔽-variable-shadowing"><a href="#变量遮蔽-variable-shadowing" class="headerlink" title="变量遮蔽(variable shadowing)"></a>变量遮蔽(variable shadowing)</h2><p>变量绑定有一个作用域(scope)，它被限定只在一个代码块(block)中生存(live)。 代码块是一个被 {}包围的语句集合。另外也允许变量遮蔽(variable shadowing)</p>
+<p>Rust 允许声明相同的变量名，在后面声明的变量会遮蔽掉前面声明的，如下所示：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">x</span> = <span class="hljs-number">5</span>;<br>    <span class="hljs-comment">// 在main函数的作用域内对之前的x进行遮蔽</span><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">x</span> = x + <span class="hljs-number">1</span>;<br><br>    &#123;<br>        <span class="hljs-comment">// 在当前的花括号作用域内，对之前的x进行遮蔽</span><br>        <span class="hljs-keyword">let</span> <span class="hljs-variable">x</span> = x * <span class="hljs-number">2</span>;<br>        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The value of x in the inner scope is: &#123;&#125;&quot;</span>, x);<br>    &#125;<br><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>将输出以下内容：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">The value of x <span class="hljs-keyword">in</span> the inner scope is: 12<br>The value of x is: 6<br></code></pre></td></tr></table></figure>
+
+<p>这和 <code>mut</code> 变量的使用是不同的，第二个 <code>let</code> 生成了完全不同的新变量，两个变量只是恰好拥有同样的名称，涉及一次内存对象的再分配 ，而 <code>mut</code> 声明的变量，可以修改同一个内存地址上的值，并不会发生内存对象的再分配，性能要更好。</p>
+<p><strong>变量遮蔽的用处</strong>在于，如果你在某个作用域内无需再使用之前的变量（在被遮蔽后，无法再访问到之前的同名变量），就可以重复的使用变量名字，而不用绞尽脑汁去想更多的名字。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Rust/" class="print-no-link">#Rust</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Rust 基础入门 - Day 2 变量和可变类型</div>
+      <div>http://example.com/2024/10/31/Rust 基础入门 - Day 2 变量和可变类型/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Vic 9527</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 31, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/29/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%201%20%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="Rust 基础入门 - Day 1 环境搭建">
+                        <span class="hidden-mobile">Rust 基础入门 - Day 1 环境搭建</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
