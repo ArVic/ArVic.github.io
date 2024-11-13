@@ -1,0 +1,660 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Vic 9527">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="枚举(enum 或 enumeration)允许你通过列举可能的成员来定义一个枚举类型，例如扑克牌花色： 123456enum PokerSuit &#123;  Clubs,  Spades,  Diamonds,  Hearts,&#125;  枚举类型是一个类型，它会包含所有可能的枚举成员，而枚举值是该类型中的具体某个成员的实例。 枚举值我们通过 :: 操作符来访问 PokerSuit 下的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust 基础入门 - Day 13 枚举">
+<meta property="og:url" content="http://example.com/2024/11/12/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2013%20%E6%9E%9A%E4%B8%BE/index.html">
+<meta property="og:site_name" content="V9527&#39;s Blog">
+<meta property="og:description" content="枚举(enum 或 enumeration)允许你通过列举可能的成员来定义一个枚举类型，例如扑克牌花色： 123456enum PokerSuit &#123;  Clubs,  Spades,  Diamonds,  Hearts,&#125;  枚举类型是一个类型，它会包含所有可能的枚举成员，而枚举值是该类型中的具体某个成员的实例。 枚举值我们通过 :: 操作符来访问 PokerSuit 下的">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-11-12T03:37:06.105Z">
+<meta property="article:modified_time" content="2024-11-13T03:52:30.815Z">
+<meta property="article:author" content="Vic 9527">
+<meta property="article:tag" content="Rust">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Rust 基础入门 - Day 13 枚举 - V9527&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>V9527</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Rust 基础入门 - Day 13 枚举"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-12 11:37" pubdate>
+          November 12, 2024 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Rust 基础入门 - Day 13 枚举</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>枚举(enum 或 enumeration)允许你通过列举可能的成员来定义一个<strong>枚举类型</strong>，例如扑克牌花色：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">PokerSuit</span> &#123;<br>  Clubs,<br>  Spades,<br>  Diamonds,<br>  Hearts,<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>枚举类型是一个类型，它会包含所有可能的枚举成员，而枚举值是该类型中的具体某个成员的实例。</strong></p>
+<h2 id="枚举值"><a href="#枚举值" class="headerlink" title="枚举值"></a>枚举值</h2><p>我们通过 <code>::</code> 操作符来访问 <code>PokerSuit</code> 下的具体成员，从代码可以清晰看出，<code>heart</code> 和 <code>diamond</code> 都是 <code>PokerSuit</code> 枚举类型的，接着可以定义一个函数来使用它们：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">heart</span> = PokerSuit::Hearts;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">diamond</span> = PokerSuit::Diamonds;<br><br>    <span class="hljs-title function_ invoke__">print_suit</span>(heart); <span class="hljs-comment">// 输出结果：Hearts</span><br>    <span class="hljs-title function_ invoke__">print_suit</span>(diamond); <span class="hljs-comment">// 输出结果：Diamonds</span><br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">print_suit</span>(card: PokerSuit) &#123;<br>    <span class="hljs-comment">// 需要在定义 enum PokerSuit 的上面添加上 #[derive(Debug)]，否则会报 card 没有实现 Debug</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;&quot;</span>,card);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>任何类型的数据都可以放入枚举成员中</strong>：例如字符串、数值、结构体甚至另一个枚举。</p>
+<p>看以下代码：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Message</span> &#123;<br>    Quit,<br>    Move &#123; x: <span class="hljs-type">i32</span>, y: <span class="hljs-type">i32</span> &#125;,<br>    <span class="hljs-title function_ invoke__">Write</span>(<span class="hljs-type">String</span>),<br>    <span class="hljs-title function_ invoke__">ChangeColor</span>(<span class="hljs-type">i32</span>, <span class="hljs-type">i32</span>, <span class="hljs-type">i32</span>),<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">m1</span> = Message::Quit;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">m2</span> = Message::Move&#123;x:<span class="hljs-number">1</span>,y:<span class="hljs-number">1</span>&#125;;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">m3</span> = Message::<span class="hljs-title function_ invoke__">ChangeColor</span>(<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>该枚举类型代表一条消息，它包含四个不同的成员：</p>
+<ul>
+<li><code>Quit</code> 没有任何关联数据</li>
+<li><code>Move</code> 包含一个匿名结构体</li>
+<li><code>Write</code> 包含一个 <code>String</code> 字符串</li>
+<li><code>ChangeColor</code> 包含三个 <code>i32</code></li>
+</ul>
+<h2 id="同一化类型"><a href="#同一化类型" class="headerlink" title="同一化类型"></a>同一化类型</h2><p>同一化类型的用途：</p>
+<ol>
+<li>类型安全：枚举确保一个值只能是其变体之一，这提供了类型安全，防止了不匹配的情况。</li>
+<li>模式匹配：Rust 的  <code>match</code>  语句允许你根据枚举的变体执行不同的代码块，这是处理枚举值的强大工具。</li>
+<li>代码清晰：使用枚举可以更清晰地表达代码的意图，尤其是在处理有限数量的不同情况时。</li>
+</ol>
+<p>示例：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// 考虑一个简单的IP地址枚举，它有两种变体：IPv4和IPv6：</span><br><span class="hljs-keyword">enum</span> <span class="hljs-title class_">IpAddrKind</span> &#123;<br>    V4,<br>    V6,<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">route</span>(ip_kind: IpAddrKind) &#123;<br>    <span class="hljs-comment">// 这里的代码适用于任何IpAddrKind类型的值</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，  <code>IpAddrKind::V4</code>  和  <code>IpAddrKind::V6</code>  都是  <code>IpAddrKind</code>  类型的值。你可以将它们传递给接受  <code>IpAddrKind</code>  类型的函数，如  <code>route</code>  函数。尽管  <code>V4</code>  和  <code>V6</code>  是不同的变体，它们都被统一视为  <code>IpAddrKind</code>  类型。</p>
+<h2 id="Option-枚举用于处理空值"><a href="#Option-枚举用于处理空值" class="headerlink" title="Option 枚举用于处理空值"></a>Option 枚举用于处理空值</h2><p><code>Option</code> 枚举包含两个成员，一个成员表示含有值：<code>Some(T)</code>, 另一个表示没有值：<code>None</code>，定义如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Option</span>&lt;T&gt; &#123;<br>    <span class="hljs-title function_ invoke__">Some</span>(T),<br>    <span class="hljs-literal">None</span>,<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>其中 <code>T</code> 是泛型参数，<code>Some(T)</code>表示该枚举成员的数据类型是 <code>T</code>，换句话说，<code>Some</code> 可以包含任何类型的数据。</p>
+<p>再来看以下代码：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">some_number</span> = <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-number">5</span>);<br><span class="hljs-keyword">let</span> <span class="hljs-variable">some_string</span> = <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-string">&quot;a string&quot;</span>);<br><br><span class="hljs-keyword">let</span> <span class="hljs-variable">absent_number</span>: <span class="hljs-type">Option</span>&lt;<span class="hljs-type">i32</span>&gt; = <span class="hljs-literal">None</span>;<br></code></pre></td></tr></table></figure>
+
+<p>如果使用 <code>None</code> 而不是 <code>Some</code>，需要告诉 Rust <code>Option&lt;T&gt;</code> 是什么类型的，因为编译器只通过 <code>None</code> 值无法推断出 <code>Some</code> 成员保存的值的类型。</p>
+<p>当有一个 <code>Some</code> 值时，我们就知道存在一个值，而这个值保存在 <code>Some</code> 中。当有个 <code>None</code> 值时，在某种意义上，它跟空值具有相同的意义：并没有一个有效的值。</p>
+<p>简而言之，因为 <code>Option&lt;T&gt;</code> 和 <code>T</code>（这里 <code>T</code> 可以是任何类型）是不同的类型，例如，这段代码不能编译，因为它尝试将 <code>Option&lt;i8&gt;</code>(<code>Option&lt;T&gt;</code>) 与 <code>i8</code>(<code>T</code>) 相加：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">x</span>: <span class="hljs-type">i8</span> = <span class="hljs-number">5</span>;<br><span class="hljs-keyword">let</span> <span class="hljs-variable">y</span>: <span class="hljs-type">Option</span>&lt;<span class="hljs-type">i8</span>&gt; = <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-number">5</span>);<br><br><span class="hljs-keyword">let</span> <span class="hljs-variable">sum</span> = x + y;<br></code></pre></td></tr></table></figure>
+
+<p>如果运行这些代码，将得到类似这样的错误信息：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh">error[E0277]: the trait bound `i8: std::ops::Add&lt;std::option::Option&lt;i8&gt;&gt;` is<br>not satisfied<br> --&gt;<br>  |<br>5 |     <span class="hljs-built_in">let</span> <span class="hljs-built_in">sum</span> = x + y;<br>  |                 ^ no implementation <span class="hljs-keyword">for</span> `i8 + std::option::Option&lt;i8&gt;`<br>  |<br></code></pre></td></tr></table></figure>
+
+<p>事实上，错误信息意味着 Rust 不知道该如何将 <code>Option&lt;i8&gt;</code> 与 <code>i8</code> 相加，因为它们的类型不同。当在 Rust 中拥有一个像 <code>i8</code> 这样类型的值时，编译器确保它总是有一个有效的值，我们可以放心使用而无需做空值检查。只有当使用 <code>Option&lt;i8&gt;</code>（或者任何用到的类型）的时候才需要担心可能没有值，而编译器会确保我们在使用值之前处理了为空的情况。</p>
+<p>换句话说，在对 <code>Option&lt;T&gt;</code> 进行 <code>T</code> 的运算之前必须将其转换为 <code>T</code>。通常这能帮助我们捕获到空值最常见的问题之一：期望某值不为空但实际上为空的情况。</p>
+<p>不再担心会错误的使用一个空值，会让你对代码更加有信心。为了拥有一个可能为空的值，你必须要显式的将其放入对应类型的 <code>Option&lt;T&gt;</code> 中。接着，当使用这个值时，必须明确的处理值为空的情况。只要一个值不是 <code>Option&lt;T&gt;</code> 类型，你就 <strong>可以</strong> 安全的认定它的值不为空。这是 Rust 的一个经过深思熟虑的设计决策，来限制空值的泛滥以增加 Rust 代码的安全性。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Rust/" class="print-no-link">#Rust</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Rust 基础入门 - Day 13 枚举</div>
+      <div>http://example.com/2024/11/12/Rust 基础入门 - Day 13 枚举/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Vic 9527</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 12, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/11/12/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2014%20%E6%96%B9%E6%B3%95(Method)/" title="Rust 基础入门 - Day 14 方法(Method)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Rust 基础入门 - Day 14 方法(Method)</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/11/11/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2012%20%E7%BB%93%E6%9E%84%E4%BD%93/" title="Rust 基础入门 - Day 12 结构体">
+                        <span class="hidden-mobile">Rust 基础入门 - Day 12 结构体</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
