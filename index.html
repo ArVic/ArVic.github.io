@@ -215,6 +215,86 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/11/14/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2017%20%E9%9B%86%E5%90%88-KV%20%E5%AD%98%E5%82%A8%20HashMap/" target="_self">
+          Rust 基础入门 - Day 17 集合-KV 存储 HashMap
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/11/14/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2017%20%E9%9B%86%E5%90%88-KV%20%E5%AD%98%E5%82%A8%20HashMap/" target="_self">
+        <div>
+          HashMap 中存储的是一一映射的 KV 键值对，并提供了平均复杂度为 O(1) 的查询方法。 创建 HashMap使用 new 方法创建12345678910// 使用 `HashMap` 需要手动通过 `use ...` 从标准库中引入到我们当前的作用域中来use std::collections::HashMap;// 创建一个HashMap，用于存储宝石种类和对应的数量let mut m
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-11-14 16:57" pubdate>
+              2024-11-14
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Rust/">#Rust</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/11/14/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2016%20%E9%9B%86%E5%90%88-%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84(Vector)/" target="_self">
+          Rust 基础入门 - Day 16 集合-动态数组(Vector)
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/11/14/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2016%20%E9%9B%86%E5%90%88-%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84(Vector)/" target="_self">
+        <div>
+          动态数组类型用 Vec&lt;T&gt; 表示，Vec 是一个动态数组，可以根据需要动态增长和缩小。适用于需要按顺序存储数据的场景。 创建 VectorVec::new使用 Vec::new 创建动态数组是最 rusty 的方式，它调用了 Vec 中的 new 关联函数： 123456// 这里，`v` 被显式地声明了类型 `Vec&lt;i32&gt;`，这是因为 Rust 编译器无法从 `Ve
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-11-14 16:01" pubdate>
+              2024-11-14
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Rust/">#Rust</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/11/13/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2015%20%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/" target="_self">
           Rust 基础入门 - Day 15 模式匹配
         </a>
@@ -513,86 +593,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2024-11-05 14:47" pubdate>
               2024-11-05
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Rust/">#Rust</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/11/04/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%206%20%E6%89%80%E6%9C%89%E6%9D%83/" target="_self">
-          Rust 基础入门 - Day 6 所有权
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/11/04/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%206%20%E6%89%80%E6%9C%89%E6%9D%83/" target="_self">
-        <div>
-          零开销内存回收 的一种高效实现方式  Rust是一种系统编程语言，其设计目的是确保内存安全并防止数据竞争，而不依赖垃圾回收器。这种内存安全性主要通过所有权系统来实现。 内存回收差异对比   特性 静态语言 动态语言    类型检查时间 编译时 运行时   类型安全 更安全，减少运行时类型错误 较灵活，但类型错误可能在运行时出现   性能 通常更高效，编译器优化 通常较低，运行时类型检查   灵活
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-04 15:08" pubdate>
-              2024-11-04
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Rust/">#Rust</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/11/01/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%205%20%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/" target="_self">
-          Rust 基础入门 - Day 5 流程控制
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/11/01/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%205%20%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/" target="_self">
-        <div>
-          条件控制使用 if 来做分支控制不像 Ruby 或 JavaScript 这样的语言，Rust 并不会尝试自动地将非布尔值转换为布尔值。必须总是显式地使用布尔值作为 if 的条件 12345if condition == true &#123;    // A...&#125; else &#123;    // B...&#125;  该代码读作：若 condition 的值为 true，则执行
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-01 17:58" pubdate>
-              2024-11-01
             </time>
           </div>
         
