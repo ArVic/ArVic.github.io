@@ -21,20 +21,20 @@
   
     <meta name="description" content="动态数组类型用 Vec&lt;T&gt; 表示，Vec 是一个动态数组，可以根据需要动态增长和缩小。适用于需要按顺序存储数据的场景。 创建 VectorVec::new使用 Vec::new 创建动态数组是最 rusty 的方式，它调用了 Vec 中的 new 关联函数： 123456&#x2F;&#x2F; 这里，&#96;v&#96; 被显式地声明了类型 &#96;Vec&lt;i32&gt;&#96;，这是因为 Rust 编译器无法从 &#96;Ve">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Rust 基础入门 - Day 16 集合-动态数组(Vector)">
-<meta property="og:url" content="http://example.com/2024/11/14/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2016%20%E9%9B%86%E5%90%88-%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84(Vector)/index.html">
+<meta property="og:title" content="Rust 基础入门 - Day 16 集合类型-动态数组(Vector)">
+<meta property="og:url" content="http://example.com/2024/11/14/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2016%20%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B-%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84(Vector)/index.html">
 <meta property="og:site_name" content="V9527&#39;s Blog">
 <meta property="og:description" content="动态数组类型用 Vec&lt;T&gt; 表示，Vec 是一个动态数组，可以根据需要动态增长和缩小。适用于需要按顺序存储数据的场景。 创建 VectorVec::new使用 Vec::new 创建动态数组是最 rusty 的方式，它调用了 Vec 中的 new 关联函数： 123456&#x2F;&#x2F; 这里，&#96;v&#96; 被显式地声明了类型 &#96;Vec&lt;i32&gt;&#96;，这是因为 Rust 编译器无法从 &#96;Ve">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-11-14T08:01:00.343Z">
-<meta property="article:modified_time" content="2024-11-14T08:57:45.758Z">
+<meta property="article:modified_time" content="2024-11-18T12:09:19.504Z">
 <meta property="article:author" content="Vic 9527">
 <meta property="article:tag" content="Rust">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Rust 基础入门 - Day 16 集合-动态数组(Vector) - V9527&#39;s Blog</title>
+  <title>Rust 基础入门 - Day 16 集合类型-动态数组(Vector) - V9527&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -188,7 +188,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Rust 基础入门 - Day 16 集合-动态数组(Vector)"></span>
+            <span id="subtitle" data-typed-text="Rust 基础入门 - Day 16 集合类型-动态数组(Vector)"></span>
           
         </div>
 
@@ -211,7 +211,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k words
+          2k words
         
       </span>
     
@@ -222,7 +222,7 @@
         
         
         
-          16 mins
+          17 mins
         
       </span>
     
@@ -259,7 +259,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Rust 基础入门 - Day 16 集合-动态数组(Vector)</h1>
+            <h1 id="seo-header">Rust 基础入门 - Day 16 集合类型-动态数组(Vector)</h1>
             
             
               <div class="markdown-body">
@@ -318,7 +318,10 @@
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">v</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">11</span>, <span class="hljs-number">22</span>, <span class="hljs-number">33</span>, <span class="hljs-number">44</span>, <span class="hljs-number">55</span>];<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">slice</span> = &amp;v[<span class="hljs-number">1</span>..=<span class="hljs-number">3</span>];<br>    <span class="hljs-built_in">assert_eq!</span>(slice, &amp;[<span class="hljs-number">22</span>, <span class="hljs-number">33</span>, <span class="hljs-number">44</span>]);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 
-
+<h2 id="课后练习"><a href="#课后练习" class="headerlink" title="课后练习"></a>课后练习</h2><ol>
+<li>使用 Vec 实现一个简单的栈，实现一个简单的栈（后进先出，LIFO）数据结构，支持push、pop 和 peek 操作。</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-meta">#[derive(Debug)]</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyStack</span>&lt;T&gt; &#123;<br>    data: <span class="hljs-type">Vec</span>&lt;T&gt;,<br>&#125;<br><br><span class="hljs-keyword">impl</span>&lt;T&gt; MyStack&lt;T&gt; &#123;<br>	<span class="hljs-keyword">fn</span> <span class="hljs-title function_">new</span>(data: <span class="hljs-type">Vec</span>&lt;T&gt;) <span class="hljs-punctuation">-&gt;</span> MyStack&lt;T&gt; &#123;<br>		MyStack &#123; data &#125;<br>	&#125;<br>	<span class="hljs-keyword">fn</span> <span class="hljs-title function_">push</span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, item: T) &#123;<br>		<span class="hljs-keyword">self</span>.data.<span class="hljs-title function_ invoke__">push</span>(item);<br>	&#125;<br>	<span class="hljs-keyword">fn</span> <span class="hljs-title function_">pop</span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Option</span>&lt;T&gt; &#123;<br>		<span class="hljs-keyword">self</span>.data.<span class="hljs-title function_ invoke__">pop</span>()<br>	&#125;<br>	<span class="hljs-keyword">fn</span> <span class="hljs-title function_">peek</span>(&amp;<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Option</span>&lt;&amp;T&gt; &#123;<br>		<span class="hljs-keyword">self</span>.data.<span class="hljs-title function_ invoke__">last</span>()<br>	&#125;<br>&#125;<br> <br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">stack</span> = MyStack::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;myStack is: &#123;:?&#125;&quot;</span>, stack);<br>    <span class="hljs-comment">// myStack is: MyStack &#123; data: [1, 2, 3] &#125;</span><br>    stack.<span class="hljs-title function_ invoke__">push</span>(<span class="hljs-number">4</span>);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;Push 4 in myStack: &#123;:?&#125;&quot;</span>, stack);<br>    <span class="hljs-comment">// Push 4 in myStack: MyStack &#123; data: [1, 2, 3, 4] &#125;</span><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">item</span> = stack.<span class="hljs-title function_ invoke__">pop</span>();<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;Pop item from myStack: &#123;:?&#125;&quot;</span>, item);<br>    <span class="hljs-comment">// Pop item from myStack: Some(4)</span><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">item</span> = stack.<span class="hljs-title function_ invoke__">peek</span>();<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;Peek item from myStack: &#123;:?&#125;&quot;</span>, item);<br>    <span class="hljs-comment">// Peek item from myStack: Some(3)</span><br>&#125;<br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -342,8 +345,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Rust 基础入门 - Day 16 集合-动态数组(Vector)</div>
-      <div>http://example.com/2024/11/14/Rust 基础入门 - Day 16 集合-动态数组(Vector)/</div>
+      <div>Rust 基础入门 - Day 16 集合类型-动态数组(Vector)</div>
+      <div>http://example.com/2024/11/14/Rust 基础入门 - Day 16 集合类型-动态数组(Vector)/</div>
     </div>
     <div class="license-meta">
       
@@ -387,9 +390,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/11/14/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2017%20%E9%9B%86%E5%90%88-KV%20%E5%AD%98%E5%82%A8%20HashMap/" title="Rust 基础入门 - Day 17 集合-KV 存储 HashMap">
+                      <a href="/2024/11/14/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2017%20%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B-KV%20%E5%AD%98%E5%82%A8%20HashMap/" title="Rust 基础入门 - Day 17 集合类型-KV 存储 HashMap">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Rust 基础入门 - Day 17 集合-KV 存储 HashMap</span>
+                        <span class="hidden-mobile">Rust 基础入门 - Day 17 集合类型-KV 存储 HashMap</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
