@@ -1,0 +1,671 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Vic 9527">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="泛型其实是一种多态。泛型主要目的是为程序员提供编程的便利，减少代码的臃肿，同时可以极大地丰富语言本身的表达能力。 123456789101112131415fn add_i8(a:i8, b:i8) -&gt; i8 &#123;    a + b&#125;fn add_i32(a:i32, b:i32) -&gt; i32 &#123;    a + b&#125;fn add_f64(a:f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust 基础入门 - Day 20 泛型(Generics)">
+<meta property="og:url" content="http://example.com/2024/11/19/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2020%20%E6%B3%9B%E5%9E%8B(Generics)/index.html">
+<meta property="og:site_name" content="V9527&#39;s Blog">
+<meta property="og:description" content="泛型其实是一种多态。泛型主要目的是为程序员提供编程的便利，减少代码的臃肿，同时可以极大地丰富语言本身的表达能力。 123456789101112131415fn add_i8(a:i8, b:i8) -&gt; i8 &#123;    a + b&#125;fn add_i32(a:i32, b:i32) -&gt; i32 &#123;    a + b&#125;fn add_f64(a:f">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-11-19T12:24:44.997Z">
+<meta property="article:modified_time" content="2024-11-19T12:49:44.350Z">
+<meta property="article:author" content="Vic 9527">
+<meta property="article:tag" content="Rust">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Rust 基础入门 - Day 20 泛型(Generics) - V9527&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>V9527</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Rust 基础入门 - Day 20 泛型(Generics)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-19 20:24" pubdate>
+          November 19, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Rust 基础入门 - Day 20 泛型(Generics)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>泛型其实是一种多态。泛型主要目的是为程序员提供编程的便利，减少代码的臃肿，同时可以极大地丰富语言本身的表达能力。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">add_i8</span>(a:<span class="hljs-type">i8</span>, b:<span class="hljs-type">i8</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">i8</span> &#123;<br>    a + b<br>&#125;<br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">add_i32</span>(a:<span class="hljs-type">i32</span>, b:<span class="hljs-type">i32</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">i32</span> &#123;<br>    a + b<br>&#125;<br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">add_f64</span>(a:<span class="hljs-type">f64</span>, b:<span class="hljs-type">f64</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">f64</span> &#123;<br>    a + b<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;add i8: &#123;&#125;&quot;</span>, <span class="hljs-title function_ invoke__">add_i8</span>(<span class="hljs-number">2i8</span>, <span class="hljs-number">3i8</span>));<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;add i32: &#123;&#125;&quot;</span>, <span class="hljs-title function_ invoke__">add_i32</span>(<span class="hljs-number">20</span>, <span class="hljs-number">30</span>));<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;add f64: &#123;&#125;&quot;</span>, <span class="hljs-title function_ invoke__">add_f64</span>(<span class="hljs-number">1.23</span>, <span class="hljs-number">1.23</span>));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用泛型参数改造以上代码：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">add</span>&lt;T&gt;(a:T, b:T) <span class="hljs-punctuation">-&gt;</span> T &#123;<br>    a + b<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;add i8: &#123;&#125;&quot;</span>, <span class="hljs-title function_ invoke__">add</span>(<span class="hljs-number">2i8</span>, <span class="hljs-number">3i8</span>));<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;add i32: &#123;&#125;&quot;</span>, <span class="hljs-title function_ invoke__">add</span>(<span class="hljs-number">20</span>, <span class="hljs-number">30</span>));<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;add f64: &#123;&#125;&quot;</span>, <span class="hljs-title function_ invoke__">add</span>(<span class="hljs-number">1.23</span>, <span class="hljs-number">1.23</span>));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="泛型详解"><a href="#泛型详解" class="headerlink" title="泛型详解"></a>泛型详解</h2><p>上面代码的 <code>T</code> 就是<strong>泛型参数</strong>，实际上在 Rust 中，泛型参数的名称你可以任意起，但是出于惯例，我们都用 <code>T</code> （<code>T</code> 是 <code>type</code> 的首字母）来作为首选，这个名称越短越好，除非需要表达含义，否则一个字母是最完美的。</p>
+<p>使用泛型参数，有一个先决条件，必需在使用前对其进行声明：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">add</span>&lt;T&gt;(a:T, b:T) <span class="hljs-punctuation">-&gt;</span> T &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>运行它，会得到以下的报错：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh">error[E0369]: cannot add `T` to `T` // 无法将 `T` 类型跟 `T` 类型进行相加<br> --&gt; src/main.rs:2:7<br>  |<br>2 |     a + b<br>  |     - ^ - T<br>  |     |<br>  |     T<br>  |<br><span class="hljs-built_in">help</span>: consider restricting <span class="hljs-built_in">type</span> parameter `T`<br>  |<br>1 | fn add&lt;T: std::ops::Add&lt;Output = T&gt;&gt;(a:T, b:T) -&gt; T &#123;<br>  |         +++++++++++++++++++++++++++<br></code></pre></td></tr></table></figure>
+
+<p>不是所有 <code>T</code> 类型都能进行相加操作，编译器建议我们给 <code>T</code> 添加一个类型限制：使用 <code>std::ops::Add&lt;Output = T&gt;</code> 特征（Trait）对 <code>T</code> 进行限制，该特征的目的就是让<strong>类型实现可相加的功能</strong>。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">add</span>&lt;T: std::ops::Add&lt;Output = T&gt;&gt;(a:T, b:T) <span class="hljs-punctuation">-&gt;</span> T &#123;<br>    a + b<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="结构体中使用泛型"><a href="#结构体中使用泛型" class="headerlink" title="结构体中使用泛型"></a>结构体中使用泛型</h2><p>结构体中的字段类型也可以用泛型来定义，下面代码定义了一个坐标点 <code>Point</code>，它可以存放任何类型的坐标值：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Point</span>&lt;T&gt; &#123;<br>    x: T,<br>    y: T,<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">integer</span> = Point &#123; x: <span class="hljs-number">5</span>, y: <span class="hljs-number">10</span> &#125;;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">float</span> = Point &#123; x: <span class="hljs-number">1.0</span>, y: <span class="hljs-number">4.0</span> &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里有两点需要特别的注意：</p>
+<ul>
+<li><strong>提前声明</strong>，跟泛型函数定义类似，首先我们在使用泛型参数之前必需要进行声明 <code>Point&lt;T&gt;</code>，接着就可以在结构体的字段类型中使用 <code>T</code> 来替代具体的类型</li>
+<li><strong>x 和 y 是相同的类型</strong></li>
+</ul>
+<p>如果想让 <code>x</code> 和 <code>y</code> 既能类型相同，又能类型不同，就需要使用不同的泛型参数：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Point</span>&lt;T,U&gt; &#123;<br>    x: T,<br>    y: U,<br>&#125;<br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">p</span> = Point&#123;x: <span class="hljs-number">1</span>, y :<span class="hljs-number">1.1</span>&#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="枚举中使用泛型"><a href="#枚举中使用泛型" class="headerlink" title="枚举中使用泛型"></a>枚举中使用泛型</h2><p>Rust 中使用最广泛的枚举<code>Option</code> 和 <code>Result</code>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Option</span>&lt;T&gt; &#123;<br>    <span class="hljs-title function_ invoke__">Some</span>(T),<br>    <span class="hljs-literal">None</span>,<br>&#125;<br><br><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Result</span>&lt;T, E&gt; &#123;<br>    <span class="hljs-title function_ invoke__">Ok</span>(T),<br>    <span class="hljs-title function_ invoke__">Err</span>(E),<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>Option&lt;T&gt;</code> 是一个拥有泛型 <code>T</code> 的枚举类型，它第一个成员是 <code>Some(T)</code>，存放了一个类型为 <code>T</code> 的值。得益于泛型的引入，我们可以在任何一个需要返回值的函数中，去使用 <code>Option&lt;T&gt;</code> 枚举类型来做为返回值，用于返回一个任意类型的值 <code>Some(T)</code>，或者没有值 <code>None</code>。</p>
+<p><code>Result</code> 关注的主要是值的正确性。如果函数正常运行，则最后返回一个 <code>Ok(T)</code>，<code>T</code> 是函数具体的返回值类型，如果函数异常运行，则返回一个 <code>Err(E)</code>，<code>E</code> 是错误类型。</p>
+<h2 id="方法中使用泛型"><a href="#方法中使用泛型" class="headerlink" title="方法中使用泛型"></a>方法中使用泛型</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Point</span>&lt;T&gt; &#123;<br>    x: T,<br>    y: T,<br>&#125;<br><br><span class="hljs-keyword">impl</span>&lt;T&gt; Point&lt;T&gt; &#123;<br>    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">x</span>(&amp;<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> &amp;T &#123;<br>        &amp;<span class="hljs-keyword">self</span>.x<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">p</span> = Point &#123; x: <span class="hljs-number">5</span>, y: <span class="hljs-number">10</span> &#125;;<br><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;p.x = &#123;&#125;&quot;</span>, p.<span class="hljs-title function_ invoke__">x</span>());<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用泛型参数前，依然需要提前声明：<code>impl&lt;T&gt;</code>，只有提前声明了，我们才能在<code>Point&lt;T&gt;</code>中使用它，这样 Rust 就知道 <code>Point</code> 的尖括号中的类型是泛型而不是具体类型。需要注意的是，这里的 <code>Point&lt;T&gt;</code> 不再是泛型声明，而是一个完整的结构体类型，因为我们定义的结构体就是 <code>Point&lt;T&gt;</code> 而不再是 <code>Point</code>。</p>
+<p>除了结构体中的泛型参数，我们还能在该结构体的方法中定义额外的泛型参数，就跟泛型函数一样：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Point</span>&lt;T, U&gt; &#123;<br>    x: T,<br>    y: U,<br>&#125;<br><br><span class="hljs-keyword">impl</span>&lt;T, U&gt; Point&lt;T, U&gt; &#123;<br>    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">mixup</span>&lt;V, W&gt;(<span class="hljs-keyword">self</span>, other: Point&lt;V, W&gt;) <span class="hljs-punctuation">-&gt;</span> Point&lt;T, W&gt; &#123;<br>        Point &#123;<br>            x: <span class="hljs-keyword">self</span>.x,<br>            y: other.y,<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">p1</span> = Point &#123; x: <span class="hljs-number">5</span>, y: <span class="hljs-number">10.4</span> &#125;;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">p2</span> = Point &#123; x: <span class="hljs-string">&quot;Hello&quot;</span>, y: <span class="hljs-string">&#x27;c&#x27;</span>&#125;;<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">p3</span> = p1.<span class="hljs-title function_ invoke__">mixup</span>(p2);<br><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;p3.x = &#123;&#125;, p3.y = &#123;&#125;&quot;</span>, p3.x, p3.y);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这个例子中，<code>T,U</code> 是定义在结构体 <code>Point</code> 上的泛型参数，<code>V,W</code> 是单独定义在方法 <code>mixup</code> 上的泛型参数，它们并不冲突，说白了，你可以理解为，一个是结构体泛型，一个是函数泛型。</p>
+<h2 id="const-泛型（Rust-1-51-版本引入的重要特性）"><a href="#const-泛型（Rust-1-51-版本引入的重要特性）" class="headerlink" title="const 泛型（Rust 1.51 版本引入的重要特性）"></a>const 泛型（Rust 1.51 版本引入的重要特性）</h2><p> const 泛型，也就是针对值的泛型，正好可以用于处理数组长度的问题：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">display_array</span>&lt;T: std::fmt::<span class="hljs-built_in">Debug</span>, <span class="hljs-keyword">const</span> N: <span class="hljs-type">usize</span>&gt;(arr: [T; N]) &#123;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;&quot;</span>, arr);<br>&#125;<br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">arr</span>: [<span class="hljs-type">i32</span>; <span class="hljs-number">3</span>] = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br>    <span class="hljs-title function_ invoke__">display_array</span>(arr);<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">arr</span>: [<span class="hljs-type">i32</span>; <span class="hljs-number">2</span>] = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>];<br>    <span class="hljs-title function_ invoke__">display_array</span>(arr);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如上所示，我们定义了一个类型为 <code>[T; N]</code> 的数组，其中 <code>T</code> 是一个基于类型的泛型参数，这个和之前讲的泛型没有区别，而重点在于 <code>N</code> 这个泛型参数，它是一个基于值的泛型参数！因为它用来替代的是数组的长度。</p>
+<p><code>N</code> 就是 const 泛型，定义的语法是 <code>const N: usize</code>，表示 const 泛型 <code>N</code> ，它基于的值类型是 <code>usize</code>。</p>
+<h2 id="泛型的性能"><a href="#泛型的性能" class="headerlink" title="泛型的性能"></a>泛型的性能</h2><p>在 Rust 中泛型是零成本的抽象，意味着你在使用泛型时，完全不用担心性能上的问题。</p>
+<p>但是任何选择都是权衡得失的，既然我们获得了性能上的巨大优势，那么又失去了什么呢？Rust 是在编译期为泛型对应的多个类型，生成各自的代码，因此损失了编译速度和增大了最终生成文件的大小。</p>
+<p>具体来说：</p>
+<p>Rust 通过在编译时进行泛型代码的 <strong>单态化</strong>(<em>monomorphization</em>)来保证效率。单态化是一个通过填充编译时使用的具体类型，将通用代码转换为特定代码的过程。</p>
+<p>编译器所做的工作正好与我们创建泛型函数的步骤相反，编译器寻找所有泛型代码被调用的位置并针对具体类型生成代码。</p>
+<p>让我们看看一个使用标准库中 <code>Option</code> 枚举的例子：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">integer</span> = <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-number">5</span>);<br><span class="hljs-keyword">let</span> <span class="hljs-variable">float</span> = <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-number">5.0</span>);<br></code></pre></td></tr></table></figure>
+
+<p>当 Rust 编译这些代码的时候，它会进行单态化。编译器会读取传递给 <code>Option&lt;T&gt;</code> 的值并发现有两种 <code>Option&lt;T&gt;</code>：一种对应 <code>i32</code> 另一种对应 <code>f64</code>。为此，它会将泛型定义 <code>Option&lt;T&gt;</code> 展开为 <code>Option_i32</code> 和 <code>Option_f64</code>，接着将泛型定义替换为这两个具体的定义。</p>
+<p>编译器生成的单态化版本的代码看起来像这样：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Option_i32</span> &#123;<br>    <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-type">i32</span>),<br>    <span class="hljs-literal">None</span>,<br>&#125;<br><br><span class="hljs-keyword">enum</span> <span class="hljs-title class_">Option_f64</span> &#123;<br>    <span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-type">f64</span>),<br>    <span class="hljs-literal">None</span>,<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">integer</span> = Option_i32::<span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-number">5</span>);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">float</span> = Option_f64::<span class="hljs-title function_ invoke__">Some</span>(<span class="hljs-number">5.0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们可以使用泛型来编写不重复的代码，而 Rust 将会为每一个实例编译其特定类型的代码。这意味着在使用泛型时没有运行时开销；当代码运行，它的执行效率就跟好像手写每个具体定义的重复代码一样。这个单态化过程正是 Rust 泛型在运行时极其高效的原因。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Rust/" class="print-no-link">#Rust</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Rust 基础入门 - Day 20 泛型(Generics)</div>
+      <div>http://example.com/2024/11/19/Rust 基础入门 - Day 20 泛型(Generics)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Vic 9527</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 19, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/11/20/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2021%20%E7%89%B9%E5%BE%81(Trait)/" title="Rust 基础入门 - Day 21 特征(Trait)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Rust 基础入门 - Day 21 特征(Trait)</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/11/18/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2019%20%E5%8C%85%E5%92%8C%E6%A8%A1%E5%9D%97/" title="Rust 基础入门 - Day 19 包和模块">
+                        <span class="hidden-mobile">Rust 基础入门 - Day 19 包和模块</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
