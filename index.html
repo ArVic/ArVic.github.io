@@ -215,6 +215,206 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/12/09/Rust%20%E8%BF%9B%E9%98%B6%20-%20Day%2027%20Marco%20%E5%AE%8F/" target="_self">
+          Rust 进阶 - Day 27 Marco 宏
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/12/09/Rust%20%E8%BF%9B%E9%98%B6%20-%20Day%2027%20Marco%20%E5%AE%8F/" target="_self">
+        <div>
+          Rust 宏介绍在 Rust 中宏分为两大类：声明式宏( declarative macros ) macro_rules! 和三种过程宏( procedural macros ):  #[derive]，在之前多次见到的派生宏，可以为目标结构体或枚举派生指定的代码，例如 Debug 特征 类属性宏(Attribute-like macro)，用于为目标添加自定义的属性 类函数宏(Function
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-12-09 09:40" pubdate>
+              2024-12-09
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Rust/">#Rust</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/12/06/Rust%20%E8%BF%9B%E9%98%B6%20-%20Day%2026%20%E8%BF%AD%E4%BB%A3%E5%99%A8/" target="_self">
+          Rust 进阶 - Day 26 迭代器
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/12/06/Rust%20%E8%BF%9B%E9%98%B6%20-%20Day%2026%20%E8%BF%AD%E4%BB%A3%E5%99%A8/" target="_self">
+        <div>
+          在 Rust 中，迭代器是一种用于遍历集合（如数组、向量、链表等）元素的工具。迭代器提供了一种抽象的方式来处理序列数据，而不需要关心数据是如何存储的。 惰性初始化在 Rust 中，迭代器是惰性的，这意味着它们只有在需要时才会计算序列中的下一个元素： 1234567let v1 = vec![1, 2, 3];// 这里不使用时不会调用let v1_iter = v1.iter();for val
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-12-06 15:50" pubdate>
+              2024-12-06
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Rust/">#Rust</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/12/05/Rust%20%E8%BF%9B%E9%98%B6%20-%20Day%2025%20%E9%97%AD%E5%8C%85/" target="_self">
+          Rust 进阶 - Day 25 闭包
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/12/05/Rust%20%E8%BF%9B%E9%98%B6%20-%20Day%2025%20%E9%97%AD%E5%8C%85/" target="_self">
+        <div>
+          闭包介绍什么是闭包闭包是一种匿名函数，它可以赋值给变量也可以作为参数传递给其它函数，不同于函数的是，它允许捕获调用者作用域中的值，例如： 123456fn main() &#123;   let x = 1;   let sum = |y| x + y;    assert_eq!(3, sum(2));&#125;  上面的代码展示了非常简单的闭包 sum，它拥有一个入参 y，同时捕获了作用域中
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-12-05 14:37" pubdate>
+              2024-12-05
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Rust/">#Rust</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/12/04/Rust%20%E8%BF%9B%E9%98%B6%20-%20Day%2024%20%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%20Part%202/" target="_self">
+          Rust 进阶 - Day 24 智能指针 Part 2
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/12/04/Rust%20%E8%BF%9B%E9%98%B6%20-%20Day%2024%20%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%20Part%202/" target="_self">
+        <div>
+          Rc&lt;T&gt;引用计数(reference counting)，顾名思义，通过记录一个数据被引用的次数来确定该数据是否正在被使用。当引用次数归零时，就代表该数据不再被使用，因此可以被清理释放。 而 Rc 正是引用计数的英文缩写。当我们希望在堆上分配一个对象供程序的多个部分使用且无法确定哪个部分最后一个结束时，就可以使用 Rc 成为数据值的所有者，例如之前提到的多线程场景就非常适合。 一个综
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-12-04 08:27" pubdate>
+              2024-12-04
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Rust/">#Rust</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/12/03/Rust%20%E8%BF%9B%E9%98%B6%20-%20Day%2023%20%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%20Part%201/" target="_self">
+          Rust 进阶 - Day 23 智能指针 Part 1
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/12/03/Rust%20%E8%BF%9B%E9%98%B6%20-%20Day%2023%20%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%20Part%201/" target="_self">
+        <div>
+          智能指针什么是智能指针智能指针(Smart Pointers)是一类数据结构，它不仅包含一个指针，还附带一些额外的元数据和功能。与普通指针不同，智能指针在 Rust 中实现了 Deref 和 Drop 两个trait，这使得它们可以像指针一样解引用并在离开作用域时自动清理资源。 智能指针作用 资源管理 自动管理资源的分配和释放，避免内存泄漏。   所有权与借用 Rust 的所有权系统通过智能指针来
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-12-03 14:22" pubdate>
+              2024-12-03
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Rust/">#Rust</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/11/22/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2022%20%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" target="_self">
           Rust 基础入门 - Day 22 生命周期
         </a>
@@ -343,7 +543,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2024/11/18/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2019%20%E5%8C%85%E5%92%8C%E6%A8%A1%E5%9D%97/" target="_self">
         <div>
-          Rust 为我们提供了强大的包管理工具：  **项目(Package)**：可以用来构建、测试和分享包 **工作空间(WorkSpace)**：对于大型项目，可以进一步将多个包联合在一起，组织成工作空间 **包(Crate)**：一个由多个模块组成的树形结构，可以作为三方库进行分发，也可以生成可执行文件进行运行 **模块(Module)**：可以一个文件多个模块，也可以一个文件一个模块，模块可以被
+          Rust 为我们提供了强大的包管理工具：  项目(Package)：可以用来构建、测试和分享包 工作空间(WorkSpace)：对于大型项目，可以进一步将多个包联合在一起，组织成工作空间 包(Crate)：一个由多个模块组成的树形结构，可以作为三方库进行分发，也可以生成可执行文件进行运行 模块(Module)：可以一个文件多个模块，也可以一个文件一个模块，模块可以被认为是真实项目中的代码组织单元
         </div>
       </a>
 
@@ -393,206 +593,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2024-11-15 11:10" pubdate>
               2024-11-15
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Rust/">#Rust</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/11/14/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2017%20%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B-KV%20%E5%AD%98%E5%82%A8%20HashMap/" target="_self">
-          Rust 基础入门 - Day 17 集合类型-KV 存储 HashMap
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/11/14/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2017%20%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B-KV%20%E5%AD%98%E5%82%A8%20HashMap/" target="_self">
-        <div>
-          HashMap 中存储的是一一映射的 KV 键值对，并提供了平均复杂度为 O(1) 的查询方法。 创建 HashMap使用 new 方法创建12345678910// 使用 `HashMap` 需要手动通过 `use ...` 从标准库中引入到我们当前的作用域中来use std::collections::HashMap;// 创建一个HashMap，用于存储宝石种类和对应的数量let mut m
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-14 16:57" pubdate>
-              2024-11-14
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Rust/">#Rust</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/11/14/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2016%20%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B-%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84(Vector)/" target="_self">
-          Rust 基础入门 - Day 16 集合类型-动态数组(Vector)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/11/14/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2016%20%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B-%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84(Vector)/" target="_self">
-        <div>
-          动态数组类型用 Vec&lt;T&gt; 表示，Vec 是一个动态数组，可以根据需要动态增长和缩小。适用于需要按顺序存储数据的场景。 创建 VectorVec::new使用 Vec::new 创建动态数组是最 rusty 的方式，它调用了 Vec 中的 new 关联函数： 123456// 这里，`v` 被显式地声明了类型 `Vec&lt;i32&gt;`，这是因为 Rust 编译器无法从 `Ve
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-14 16:01" pubdate>
-              2024-11-14
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Rust/">#Rust</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/11/13/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2015%20%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/" target="_self">
-          Rust 基础入门 - Day 15 模式匹配
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/11/13/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2015%20%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/" target="_self">
-        <div>
-          在 Rust 中，模式匹配最常用的就是 match 和 if let。 match 匹配有以下几点值得注意：  match 的匹配必须要穷举出所有可能  _ 通配符来代表未列出的所有可能性 match 的每一个分支都必须是一个表达式，且所有分支的表达式最终返回值的类型必须相同 X | Y，类似逻辑运算符 或，代表该分支可以匹配 X 也可以匹配 Y，只要满足一个即可  其实 match 跟其他语言中
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-13 11:59" pubdate>
-              2024-11-13
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Rust/">#Rust</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/11/12/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2014%20%E6%96%B9%E6%B3%95(Method)/" target="_self">
-          Rust 基础入门 - Day 14 方法(Method)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/11/12/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2014%20%E6%96%B9%E6%B3%95(Method)/" target="_self">
-        <div>
-          定义方法Rust 使用 impl 来定义方法，例如以下代码： 12345678910111213141516171819202122struct Circle &#123;    x: f64,    y: f64,    radius: f64,&#125;impl Circle &#123;    // new是Circle的关联函数，因为它的第一个参数不是self，且new并不是关键字
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-12 12:02" pubdate>
-              2024-11-12
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Rust/">#Rust</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/11/12/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2013%20%E6%9E%9A%E4%B8%BE/" target="_self">
-          Rust 基础入门 - Day 13 枚举
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/11/12/Rust%20%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%20-%20Day%2013%20%E6%9E%9A%E4%B8%BE/" target="_self">
-        <div>
-          枚举(enum 或 enumeration)允许你通过列举可能的成员来定义一个枚举类型，例如扑克牌花色： 123456enum PokerSuit &#123;  Clubs,  Spades,  Diamonds,  Hearts,&#125;  枚举类型是一个类型，它会包含所有可能的枚举成员，而枚举值是该类型中的具体某个成员的实例。 枚举值我们通过 :: 操作符来访问 PokerSuit 下的
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-12 11:37" pubdate>
-              2024-11-12
             </time>
           </div>
         
