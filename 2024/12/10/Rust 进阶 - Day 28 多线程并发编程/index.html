@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/rust_concurrent.png">
 <meta property="article:published_time" content="2024-12-10T05:01:53.716Z">
-<meta property="article:modified_time" content="2024-12-10T13:02:18.387Z">
+<meta property="article:modified_time" content="2024-12-10T13:24:25.303Z">
 <meta property="article:author" content="Vic 9527">
 <meta property="article:tag" content="Rust">
 <meta name="twitter:card" content="summary_large_image">
@@ -213,7 +213,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.2k words
+          3.9k words
         
       </span>
     
@@ -224,7 +224,7 @@
         
         
         
-          27 mins
+          33 mins
         
       </span>
     
@@ -445,6 +445,39 @@
 <li>在使用数据前必须先获取锁</li>
 <li>在数据使用完成后，必须<strong>及时</strong>的释放锁，比如文章开头的例子，使用内部语句块的目的就是为了及时的释放锁</li>
 </ul>
+<h2 id="Atomic-原子类型"><a href="#Atomic-原子类型" class="headerlink" title="Atomic 原子类型"></a>Atomic 原子类型</h2><ul>
+<li>原子操作是通过指令提供的支持</li>
+<li>性能相比锁和消息传递会好很多</li>
+<li>原子类型不需要开发者处理加锁和释放锁的问题</li>
+<li>支持修改，读取等操作，还具备较高的并发性能</li>
+<li>原子类型是无锁类型</li>
+<li>原子类型内部使用了<code>CAS</code>循环</li>
+</ul>
+<h3 id="多线程中使用-Atomic"><a href="#多线程中使用-Atomic" class="headerlink" title="多线程中使用 Atomic"></a>多线程中使用 Atomic</h3><p>在多线程环境中要使用<code>Atomic</code>需要配合<code>Arc</code>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::sync::Arc;<br><span class="hljs-keyword">use</span> std::sync::atomic::&#123;AtomicUsize, Ordering&#125;;<br><span class="hljs-keyword">use</span> std::&#123;hint, thread&#125;;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">spinlock</span> = Arc::<span class="hljs-title function_ invoke__">new</span>(AtomicUsize::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-number">1</span>));<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">spinlock_clone</span> = Arc::<span class="hljs-title function_ invoke__">clone</span>(&amp;spinlock);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">thread</span> = thread::<span class="hljs-title function_ invoke__">spawn</span>(<span class="hljs-keyword">move</span>|| &#123;<br>        spinlock_clone.<span class="hljs-title function_ invoke__">store</span>(<span class="hljs-number">0</span>, Ordering::SeqCst);<br>    &#125;);<br><br>    <span class="hljs-comment">// 等待其它线程释放锁</span><br>    <span class="hljs-keyword">while</span> spinlock.<span class="hljs-title function_ invoke__">load</span>(Ordering::SeqCst) != <span class="hljs-number">0</span> &#123;<br>        hint::<span class="hljs-title function_ invoke__">spin_loop</span>();<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-variable">Err</span>(panic) = thread.<span class="hljs-title function_ invoke__">join</span>() &#123;<br>        <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;Thread had an error: &#123;:?&#125;&quot;</span>, panic);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Atomic-的应用场景"><a href="#Atomic-的应用场景" class="headerlink" title="Atomic 的应用场景"></a>Atomic 的应用场景</h3><p>事实上，<code>Atomic</code>虽然对于用户不太常用，但是对于高性能库的开发者、标准库开发者都非常常用，它是并发原语的基石，除此之外，还有一些场景适用：</p>
+<ul>
+<li>无锁(lock free)数据结构</li>
+<li>全局变量，例如全局自增 ID, 在后续章节会介绍</li>
+<li>跨线程计数器，例如可以用于统计指标</li>
+</ul>
+<p>以上列出的只是<code>Atomic</code>适用的部分场景，具体场景需要大家未来根据自己的需求进行权衡选择。</p>
+<h2 id="基于-Send-和-Sync-的线程安全"><a href="#基于-Send-和-Sync-的线程安全" class="headerlink" title="基于 Send 和 Sync 的线程安全"></a>基于 Send 和 Sync 的线程安全</h2><p><code>Send</code>和<code>Sync</code>是 Rust 安全并发的重中之重，但是实际上它们只是标记特征(marker trait，该特征未定义任何行为，因此非常适合用于标记), 来看看它们的作用：</p>
+<ul>
+<li>实现<code>Send</code>的类型可以在线程间安全的传递其所有权</li>
+<li>实现<code>Sync</code>的类型可以在线程间安全的共享(通过引用)</li>
+</ul>
+<p>这里还有一个潜在的依赖：一个类型要在线程间安全的共享的前提是，指向它的引用必须能在线程间传递。因为如果引用都不能被传递，我们就无法在多个线程间使用引用去访问同一个数据了。</p>
+<p>由上可知，**若类型 T 的引用<code>&amp;T</code>是<code>Send</code>，则<code>T</code>是<code>Sync</code>**。</p>
+<h3 id="为裸指针实现Send-和-Sync"><a href="#为裸指针实现Send-和-Sync" class="headerlink" title="为裸指针实现Send 和 Sync"></a>为裸指针实现<code>Send</code> 和 <code>Sync</code></h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::thread;<br><span class="hljs-keyword">use</span> std::sync::Arc;<br><span class="hljs-keyword">use</span> std::sync::Mutex;<br><br><span class="hljs-meta">#[derive(Debug)]</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyBox</span>(*<span class="hljs-keyword">const</span> <span class="hljs-type">u8</span>);<br><span class="hljs-comment">// `Send`和`Sync`是`unsafe`特征，实现时需要用`unsafe`代码块包裹。</span><br><span class="hljs-keyword">unsafe</span> <span class="hljs-keyword">impl</span> <span class="hljs-title class_">Send</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">MyBox</span> &#123;&#125;<br><span class="hljs-keyword">unsafe</span> <span class="hljs-keyword">impl</span> <span class="hljs-title class_">Sync</span> <span class="hljs-keyword">for</span> <span class="hljs-title class_">MyBox</span> &#123;&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">b</span> = &amp;<span class="hljs-title function_ invoke__">MyBox</span>(<span class="hljs-number">5</span> <span class="hljs-keyword">as</span> *<span class="hljs-keyword">const</span> <span class="hljs-type">u8</span>);<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">v</span> = Arc::<span class="hljs-title function_ invoke__">new</span>(Mutex::<span class="hljs-title function_ invoke__">new</span>(b));<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">t</span> = thread::<span class="hljs-title function_ invoke__">spawn</span>(<span class="hljs-keyword">move</span> || &#123;<br>        <span class="hljs-keyword">let</span> <span class="hljs-variable">_v1</span> =  v.<span class="hljs-title function_ invoke__">lock</span>().<span class="hljs-title function_ invoke__">unwrap</span>();<br>    &#125;);<br><br>    t.<span class="hljs-title function_ invoke__">join</span>().<span class="hljs-title function_ invoke__">unwrap</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>实现<code>Send</code>的类型可以在线程间安全的传递其所有权, 实现<code>Sync</code>的类型可以在线程间安全的共享(通过引用)</li>
+<li>绝大部分类型都实现了<code>Send</code>和<code>Sync</code>，常见的未实现的有：裸指针、<code>Cell</code>、<code>RefCell</code>、<code>Rc</code> 等</li>
+<li>可以为自定义类型实现<code>Send</code>和<code>Sync</code>，但是需要<code>unsafe</code>代码块</li>
+<li>可以为部分 Rust 中的类型实现<code>Send</code>、<code>Sync</code>，但是需要使用<code>newtype</code>，例如文中的裸指针例子</li>
+</ol>
 
                 
               </div>
